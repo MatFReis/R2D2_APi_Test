@@ -64,7 +64,7 @@ public class POST_Products {
                     .when()
                         .post("/api/products")
                         .then()
-                        .statusCode(400) // Código 400 indica requisição inválida
+                        .statusCode(400)
                         .body("mensagem", equalTo("Campos obrigatórios não podem ser nulos ou vazios"))
                         .body("detalhes[0].campo", equalTo("nome"))
                         .body("detalhes[1].campo", equalTo("categoria"))
@@ -74,7 +74,7 @@ public class POST_Products {
         }
 
         @Test
-        public void Devo_Validar_Campos_Únicos(){
+        public void Devo_Validar_Campos_nicos(){
         String token = getToken();
         String nomeProduto = "ProdutoUnico";
 
@@ -108,7 +108,7 @@ public class POST_Products {
                               + "}")
             .post("/api/products")
             .then()
-                .statusCode(400)
+                .statusCode(409) //CONFLICT
                 .body("mensagem", equalTo("Nome do produto já existe"));
 }
 
@@ -125,19 +125,14 @@ public class POST_Products {
                 .param("precoMaximo", 200.0)
                 .param("marca", "MarcaProduto")
                 .when()
-                .get("/api/products")
-                .then()
-                .statusCode(200)
-                .body("nome", equalTo("NomeProduto"))
-                .body("categoria", equalTo("Eletrônicos"))
-                .body("preco", greaterThanOrEqualTo(50.0))
-                .body("preco", lessThanOrEqualTo(200.0))
-                .body("marca", equalTo("MarcaProduto"));
+                    .get("/api/products")
+                    .then()
+                    .statusCode(200)
+                    .body("nome", equalTo("NomeProduto"))
+                    .body("categoria", equalTo("Alimentos"))
+                    .body("preco", greaterThanOrEqualTo(50.0))
+                    .body("preco", lessThanOrEqualTo(200.0))
+                    .body("marca", equalTo("MarcaProduto"));
     }
-
-    @Test
-    Devo_Criar_Um_Produto_E_Verificar_Se_Foi_Adicioado(){
-}
-
 
 }
